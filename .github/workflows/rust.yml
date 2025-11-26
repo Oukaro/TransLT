@@ -1,0 +1,36 @@
+name: Build Bot
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create .env file from secret
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env
+        
+      - name: Set up Rust toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Build release binary (stripped)
+        run: cargo build --release
+        env:
+          CARGO_PROFILE_RELEASE_STRIP: symbols
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: bot
+          path: target/release/rust_bot
+          retention-days: 7
