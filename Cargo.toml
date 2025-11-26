@@ -67,3 +67,7 @@ features = ["v4"]
 
 [dependencies.whatlang]
 version = "0.18.0"
+[profile.release]
+strip = "symbols"
+opt-level = "z"    
+lto = true         
