@@ -1,0 +1,11 @@
+[build]
+builder = "railpack"
+packs = ["rust"]
+
+[build.env]
+DEBIAN_PACKAGES = "pkg-config libssl-dev ca-certificates"
+[build]
+command = "cargo build --release"
+
+[start]
+command = "./target/release/rust_bot"
